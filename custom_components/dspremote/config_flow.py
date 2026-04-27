@@ -65,13 +65,7 @@ def _paths_form_schema(
             )
         )
     fields[vol.Optional(CONF_ADDITIONAL_PATH_PATTERNS, default=default_extra)] = (
-        selector.TextSelector(
-            selector.TextSelectorConfig(
-                type=selector.TextSelectorType.TEXT,
-                multiline=True,
-                placeholder="/outputs/*/gain",
-            )
-        )
+        selector.TextSelector(selector.TextSelectorConfig(multiline=True))
     )
     return vol.Schema(fields)
 
