@@ -2,7 +2,5 @@
   "name": "dspremote",
   "domains": ["dspremote"],
   "homeassistant": "2024.1.0",
-  "filename": "dspremote-ha.zip",
-  "zip_release": true,
   "render_readme": true
 }
