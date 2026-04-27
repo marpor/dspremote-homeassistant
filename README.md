@@ -12,12 +12,14 @@ Custom integration for [Home Assistant](https://www.home-assistant.io/). Connect
 ### HACS (recommended)
 
 1. In Home Assistant, open **HACS**.
-2. Open the menu (⋮) → **Custom repositories**.
-3. Add this repository URL, category **Integration**, then **Add**.
-4. In **HACS → Integrations**, open **dspremote** (or use **Explore & download** and search for **dspremote**).
-5. Choose **Download** / **Install** and complete the flow; **restart Home Assistant** when prompted.
-6. Go to **Settings → Devices & services → Add integration** and select **dspremote**.
-7. Enter the dspremote **host** (or IP), **port**, and **selected field paths** (see [Configuration](#configuration)).
+2. Go to **Integrations** (or **Explore & download**), search for **dspremote**, open it, then **Download** / **Install**. Restart Home Assistant when prompted.
+
+   If HACS says the repository **already exists in the store**, it is listed as a default integration—**do not** add it under **Custom repositories**; installing from **Integrations** as above is enough.
+
+3. Go to **Settings → Devices & services → Add integration** and select **dspremote**.
+4. Enter the dspremote **host** (or IP), **port**, and **selected field paths** (see [Configuration](#configuration)).
+
+**Fork or unlisted copy only:** use the HACS menu (⋮) → **Custom repositories**, add your Git URL with category **Integration**. You cannot add the default store URL again; HACS will reject it with “exists in the store”.
 
 ### Manual install
 
@@ -28,7 +30,7 @@ Custom integration for [Home Assistant](https://www.home-assistant.io/). Connect
 
 3. Confirm `manifest.json` exists under `custom_components/dspremote/`.
 4. **Restart Home Assistant**.
-5. **Settings → Devices & services → Add integration** → **dspremote**, then enter host, port, and field paths as in HACS step 7.
+5. **Settings → Devices & services → Add integration** → **dspremote**, then enter host, port, and field paths as in the HACS flow above.
 
 ## Configuration
 

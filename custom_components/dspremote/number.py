@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfDecibel
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -35,7 +34,7 @@ class DspremoteNumberEntity(DspremoteFieldEntity, NumberEntity):
     @property
     def native_unit_of_measurement(self):
         if self.descriptor.unit == "dB":
-            return UnitOfDecibel.DECIBEL
+            return "dB"
         return self.descriptor.unit
 
     @property
