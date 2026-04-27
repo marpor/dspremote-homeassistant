@@ -152,8 +152,13 @@ class DspremoteConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return DspremoteOptionsFlow()
 
 
-class DspremoteOptionsFlow(config_entries.OptionsFlow):
-    """Handle options for dspremote."""
+class DspremoteOptionsFlow(config_entries.OptionsFlowWithReload):
+    """Handle options for dspremote.
+
+    Uses OptionsFlowWithReload so the config entry reloads when options change
+    (entity set must be rebuilt). Do not combine with entry.add_update_listener
+    for the same reload — core schedules reload when options actually change.
+    """
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
