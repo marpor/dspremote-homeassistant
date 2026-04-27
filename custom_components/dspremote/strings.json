@@ -1,27 +1,41 @@
 {
   "config": {
+    "error": {
+      "cannot_connect": "Could not reach the dspremote API. Check host, port, HTTPS, and that the server is running."
+    },
     "step": {
       "user": {
         "title": "Connect to dspremote",
-        "description": "Enter the host and port of your running dspremote API server.",
+        "description": "Enter the host and port of your running dspremote API server. On the next step you can pick which fields become Home Assistant entities.",
         "data": {
           "host": "Host",
           "port": "Port",
           "ssl": "Use HTTPS",
           "use_websocket": "Enable websocket updates",
-          "prefix": "Read prefix",
-          "selected_paths": "Selected field paths/patterns (comma or newline separated)"
+          "prefix": "Read prefix"
+        }
+      },
+      "paths": {
+        "title": "Choose fields",
+        "description": "Select paths from your device. Only these fields get entities (you can change this later in integration options). Use “Additional paths” for wildcards such as /outputs/*/gain if you need patterns not shown in the list.",
+        "data": {
+          "selected_paths": "Fields from device",
+          "additional_path_patterns": "Additional paths (optional, one per line)"
         }
       }
     }
   },
   "options": {
+    "error": {
+      "cannot_connect": "Could not refresh the path list from dspremote. You can still edit “Additional paths”, then save."
+    },
     "step": {
       "init": {
-        "title": "Select dspremote fields",
-        "description": "Only matching fields will be created as entities. Supports exact paths and wildcards (for example /outputs/*/gain). Leave empty to create no field entities.",
+        "title": "dspremote fields",
+        "description": "Pick fields from the current discovery list. Patterns that do not appear in the list (for example wildcards) stay in “Additional paths”.",
         "data": {
-          "selected_paths": "Selected field paths/patterns (comma or newline separated)"
+          "selected_paths": "Fields from device",
+          "additional_path_patterns": "Additional paths (optional, one per line)"
         }
       }
     }

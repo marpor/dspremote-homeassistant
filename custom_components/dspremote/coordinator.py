@@ -118,6 +118,16 @@ class DspremoteCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 await asyncio.sleep(5)
 
 
+def list_field_paths_from_discovery(
+    discovery: dict[str, Any], fields_payload: dict[str, Any]
+) -> list[str]:
+    """Concrete field paths from discovery + /v1/fields (for config/options UI)."""
+    field_templates: dict[str, dict[str, Any]] = {}
+    action_templates: dict[str, dict[str, Any]] = {}
+    _collect_nodes(discovery, field_templates, action_templates)
+    return [d.path for d in _expand_fields(field_templates, fields_payload)]
+
+
 def _collect_nodes(
     node: dict[str, Any],
     field_templates: dict[str, dict[str, Any]],

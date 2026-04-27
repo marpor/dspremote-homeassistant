@@ -17,7 +17,7 @@ Custom integration for [Home Assistant](https://www.home-assistant.io/). Connect
    If HACS says the repository **already exists in the store**, it is listed as a default integration—**do not** add it under **Custom repositories**; installing from **Integrations** as above is enough.
 
 3. Go to **Settings → Devices & services → Add integration** and select **dspremote**.
-4. Enter the dspremote **host** (or IP), **port**, and **selected field paths** (see [Configuration](#configuration)).
+4. Enter **host**, **port**, and connection options, then pick fields from the list (see [Configuration](#configuration)).
 
 **Fork or unlisted copy only:** use the HACS menu (⋮) → **Custom repositories**, add your Git URL with category **Integration**. You cannot add the default store URL again; HACS will reject it with “exists in the store”.
 
@@ -30,11 +30,11 @@ Custom integration for [Home Assistant](https://www.home-assistant.io/). Connect
 
 3. Confirm `manifest.json` exists under `custom_components/dspremote/`.
 4. **Restart Home Assistant**.
-5. **Settings → Devices & services → Add integration** → **dspremote**, then enter host, port, and field paths as in the HACS flow above.
+5. **Settings → Devices & services → Add integration** → **dspremote**, then follow the two-step wizard (connection, then field selection).
 
 ## Configuration
 
-During setup (and later under **Configure** on the integration entry), you choose which API paths become entities. Use **wildcards** (`*`) where the API supports them.
+After connecting, the UI loads **all field paths** from discovery so you can **multi-select** the ones you want. Under **Configure** on the integration, the same picker appears (refetched from the device). Use **Additional paths** (one per line) for **wildcards** or any path not shown in the list.
 
 **Examples**
 
