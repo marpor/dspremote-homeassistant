@@ -3,6 +3,7 @@
   "name": "dspremote",
   "version": "0.1.0",
   "config_flow": true,
+  "homeassistant": "2024.12.0",
   "requirements": [],
   "codeowners": []
 }

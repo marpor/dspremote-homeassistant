@@ -4,7 +4,7 @@ Custom integration for [Home Assistant](https://www.home-assistant.io/). Connect
 
 ## Requirements
 
-- **Home Assistant** 2024.1 or newer (see `hacs.json`).
+- **Home Assistant** 2024.12 or newer (see `hacs.json`); required for the options flow API used by this integration.
 - A reachable **dspremote** HTTP API (host/IP and port).
 
 ## Installation

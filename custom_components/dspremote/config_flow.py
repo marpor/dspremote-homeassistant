@@ -7,6 +7,7 @@ from typing import Any
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_SSL
+from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 
 from .const import (
@@ -64,15 +65,14 @@ class DspremoteConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
 
     @staticmethod
+    @callback
     def async_get_options_flow(config_entry):
-        return DspremoteOptionsFlow(config_entry)
+        """Options flow; core binds `config_entry` on the instance (HA 2024.12+)."""
+        return DspremoteOptionsFlow()
 
 
 class DspremoteOptionsFlow(config_entries.OptionsFlow):
     """Handle options for dspremote."""
-
-    def __init__(self, config_entry) -> None:
-        self.config_entry = config_entry
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
