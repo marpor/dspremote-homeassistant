@@ -1,0 +1,8 @@
+{
+  "domain": "dspremote",
+  "name": "dspremote",
+  "version": "0.1.0",
+  "config_flow": true,
+  "requirements": [],
+  "codeowners": []
+}
