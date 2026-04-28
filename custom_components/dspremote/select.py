@@ -20,7 +20,7 @@ async def async_setup_entry(
         DspremoteSelectEntity(coordinator, descriptor)
         for descriptor in coordinator.fields
         if descriptor.value_type == "enum"
-        and descriptor.access == "readWrite"
+        and not descriptor.read_only
         and descriptor.enum_values
         and coordinator.is_field_selected(descriptor.path)
     ]

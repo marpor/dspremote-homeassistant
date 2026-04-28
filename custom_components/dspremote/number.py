@@ -20,7 +20,7 @@ async def async_setup_entry(
         DspremoteNumberEntity(coordinator, descriptor)
         for descriptor in coordinator.fields
         if descriptor.value_type in {"number", "integer"}
-        and descriptor.access == "readWrite"
+        and not descriptor.read_only
         and coordinator.is_field_selected(descriptor.path)
     ]
     async_add_entities(entities)

@@ -19,7 +19,7 @@ async def async_setup_entry(
     entities = [
         DspremoteSensorEntity(coordinator, descriptor)
         for descriptor in coordinator.fields
-        if descriptor.access == "readOnly"
+        if descriptor.read_only
         and coordinator.is_field_selected(descriptor.path)
     ]
     async_add_entities(entities)

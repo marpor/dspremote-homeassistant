@@ -20,7 +20,7 @@ async def async_setup_entry(
         DspremoteSwitchEntity(coordinator, descriptor)
         for descriptor in coordinator.fields
         if descriptor.value_type == "boolean"
-        and descriptor.access == "readWrite"
+        and not descriptor.read_only
         and coordinator.is_field_selected(descriptor.path)
     ]
     async_add_entities(entities)

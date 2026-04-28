@@ -28,7 +28,7 @@ class FieldDescriptor:
     path: str
     template_path: str
     value_type: str
-    access: str
+    read_only: bool
     unit: str | None
     range_spec: dict[str, Any] | None
     enum_values: list[str]
@@ -205,7 +205,7 @@ def _descriptor_from_template(
         path=concrete_path,
         template_path=template_path,
         value_type=node.get("type", ""),
-        access=node.get("access", ""),
+        read_only=bool(node.get("readOnly", False)),
         unit=node.get("unit"),
         range_spec=range_spec,
         enum_values=enum_values,
