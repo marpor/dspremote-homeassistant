@@ -38,9 +38,9 @@ After connecting, the UI loads **all field paths** from discovery so you can **m
 
 **Examples**
 
-- `/outputs/*/gain` → number (gain sliders)
-- `/outputs/*/mute` → switches
-- `/outputs/*/high_pass/type` → select
+- `/out/*/gain` → number (gain sliders)
+- `/out/*/mute` → switches
+- `/out/*/high_pass/type` → select
 
 Pick only what you need—each path (or pattern) can create multiple entities. You can **change paths anytime** in the integration options.
 

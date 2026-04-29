@@ -17,7 +17,7 @@
       },
       "paths": {
         "title": "Choose fields",
-        "description": "Select paths from your device. Only these fields get entities (you can change this later in integration options). Use “Additional paths” for wildcards such as /outputs/*/gain if you need patterns not shown in the list.",
+        "description": "Select paths from your device. Only these fields get entities (you can change this later in integration options). Use “Additional paths” for wildcards such as /out/*/gain if you need patterns not shown in the list.",
         "data": {
           "selected_paths": "Fields from device",
           "additional_path_patterns": "Additional paths (optional, one per line)"
