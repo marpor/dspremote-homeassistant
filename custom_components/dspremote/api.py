@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 from collections.abc import AsyncIterator
 from contextlib import suppress
 from typing import Any
@@ -16,6 +17,17 @@ try:
     from homeassistant.core import HomeAssistant
 except Exception:  # pragma: no cover - lets tests run without HA installed
     HomeAssistant = Any  # type: ignore[misc,assignment]
+
+
+def _seq_for_ws_pong(seq: object) -> int | float | None:
+    """Return seq for a JSON pong reply, or None if invalid (matches web UI / desktop WS contract)."""
+    if isinstance(seq, bool):
+        return None
+    if isinstance(seq, int):
+        return seq
+    if isinstance(seq, float) and math.isfinite(seq):
+        return seq
+    return None
 
 
 class DspremoteApiClient:
@@ -70,7 +82,13 @@ class DspremoteApiClient:
             await ws.receive_json()  # subAck
             async for msg in ws:
                 if msg.type == WSMsgType.TEXT:
-                    yield msg.json()
+                    payload = msg.json()
+                    if payload.get("type") == "ping":
+                        pong_seq = _seq_for_ws_pong(payload.get("seq"))
+                        if pong_seq is not None:
+                            await ws.send_json({"type": "pong", "seq": pong_seq})
+                        continue
+                    yield payload
                 elif msg.type in (WSMsgType.ERROR, WSMsgType.CLOSE, WSMsgType.CLOSED):
                     break
 
