@@ -46,7 +46,7 @@ Pick only what you need—each path (or pattern) can create multiple entities. Y
 
 ## Features
 
-- Loads schema from `/v1/discovery` and `/v1/fields`.
+- Loads schema from `/v1/discovery`.
 - Refreshes values with `POST /v1/read-prefixes`.
 - Optional live updates via WebSocket `/v1/stream`.
 - Entities **only** for paths you select (no full-device flood).

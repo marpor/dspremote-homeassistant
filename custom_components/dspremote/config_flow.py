@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from typing import Any
 
 import voluptuous as vol
@@ -87,12 +86,8 @@ class DspremoteConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._abort_if_unique_id_configured()
             try:
                 client = DspremoteApiClient(base_url, self.hass)
-                discovery, fields_payload = await asyncio.gather(
-                    client.discovery(), client.fields()
-                )
-                self._available_paths = list_field_paths_from_discovery(
-                    discovery, fields_payload
-                )
+                discovery = await client.discovery()
+                self._available_paths = list_field_paths_from_discovery(discovery)
             except Exception:
                 errors["base"] = "cannot_connect"
             else:
@@ -164,12 +159,8 @@ class DspremoteOptionsFlow(config_entries.OptionsFlowWithReload):
             base_url = entry.data[CONF_BASE_URL]
             try:
                 client = DspremoteApiClient(base_url, self.hass)
-                discovery, fields_payload = await asyncio.gather(
-                    client.discovery(), client.fields()
-                )
-                self._available_paths = list_field_paths_from_discovery(
-                    discovery, fields_payload
-                )
+                discovery = await client.discovery()
+                self._available_paths = list_field_paths_from_discovery(discovery)
             except Exception:
                 errors["base"] = "cannot_connect"
                 self._available_paths = []

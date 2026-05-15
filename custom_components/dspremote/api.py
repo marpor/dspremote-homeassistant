@@ -61,9 +61,6 @@ class DspremoteApiClient:
     async def discovery(self) -> dict[str, Any]:
         return await self._get_json("/v1/discovery")
 
-    async def fields(self) -> dict[str, Any]:
-        return await self._get_json("/v1/fields")
-
     async def read_prefix(self, prefix: str) -> dict[str, Any]:
         payload = await self._post_json("/v1/read-prefixes", {"prefix": prefix})
         return payload.get("values", {})

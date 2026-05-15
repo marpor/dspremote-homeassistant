@@ -93,11 +93,9 @@ class DspremoteCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     async def _bootstrap_metadata(self) -> None:
         discovery = await self.api.discovery()
-        fields = await self.api.fields()
-        field_templates: dict[str, dict[str, Any]] = {}
         action_templates: dict[str, dict[str, Any]] = {}
-        _collect_nodes(discovery, field_templates, action_templates)
-        self.fields = _expand_fields(field_templates, fields)
+        _collect_actions_from_nodes(discovery, action_templates)
+        self.fields = _collect_fields(discovery)
         self.actions = _collect_actions(action_templates)
 
     async def _ws_loop(self) -> None:
@@ -118,56 +116,44 @@ class DspremoteCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 await asyncio.sleep(5)
 
 
-def list_field_paths_from_discovery(
-    discovery: dict[str, Any], fields_payload: dict[str, Any]
-) -> list[str]:
-    """Concrete field paths from discovery + /v1/fields (for config/options UI)."""
-    field_templates: dict[str, dict[str, Any]] = {}
-    action_templates: dict[str, dict[str, Any]] = {}
-    _collect_nodes(discovery, field_templates, action_templates)
-    return [d.path for d in _expand_fields(field_templates, fields_payload)]
+def list_field_paths_from_discovery(discovery: dict[str, Any]) -> list[str]:
+    """Concrete field paths from discovery (for config/options UI)."""
+    return [d.path for d in _collect_fields(discovery)]
 
 
-def _collect_nodes(
+def _collect_actions_from_nodes(
     node: dict[str, Any],
-    field_templates: dict[str, dict[str, Any]],
     action_templates: dict[str, dict[str, Any]],
 ) -> None:
     path = node.get("path")
     node_kind = node.get("nodeKind")
-    if isinstance(path, str) and node_kind == "Field":
-        field_templates[path] = node
     if isinstance(path, str) and node_kind == "Action":
         action_templates[path] = node
     for child in node.get("children", []):
         if isinstance(child, dict):
-            _collect_nodes(child, field_templates, action_templates)
+            _collect_actions_from_nodes(child, action_templates)
 
 
-def _expand_fields(
-    field_templates: dict[str, dict[str, Any]], fields_payload: dict[str, Any]
-) -> list[FieldDescriptor]:
+def _collect_fields(discovery: dict[str, Any]) -> list[FieldDescriptor]:
     out: list[FieldDescriptor] = []
-    fields = fields_payload.get("fields", {})
-    for path in fields.get("paths", []):
-        tmpl = field_templates.get(path)
-        if not tmpl:
-            continue
-        out.append(_descriptor_from_template(path, path, tmpl))
 
-    for array in fields.get("arrays", []):
-        indices = array.get("indices", [])
-        templates = array.get("fields", [])
-        combos = _index_combinations(indices)
-        for template in templates:
-            tmpl = field_templates.get(template)
-            if not tmpl:
-                continue
-            for combo in combos:
-                concrete = template
+    def walk(node: dict[str, Any], indices: list[dict[str, Any]]) -> None:
+        path = node.get("path")
+        next_indices = indices
+        index = node.get("index")
+        if isinstance(index, dict):
+            next_indices = [*indices, index]
+        if isinstance(path, str) and node.get("nodeKind") == "Field":
+            for combo in _index_combinations(next_indices):
+                concrete = path
                 for key, value in combo.items():
                     concrete = concrete.replace(f"{{{key}}}", str(value))
-                out.append(_descriptor_from_template(concrete, template, tmpl))
+                out.append(_descriptor_from_template(concrete, path, node))
+        for child in node.get("children", []):
+            if isinstance(child, dict):
+                walk(child, next_indices)
+
+    walk(discovery, [])
     out.sort(key=lambda item: item.path)
     return out
 
